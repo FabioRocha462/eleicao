@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+body{
+    font-family: poppins;
+}
+
+/*Area Header*/
+header{
+    background-color: black;
+}
+
+/*Area Nav-Bar */
+
+nav{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-bottom: 10px;
+}
+
+/* Area img-fluid */
+
+.img-fluid{
+  margin-left: 25%;
+}
+
+/* election-index */
+
+.election{
+    margin-top: 30px;
+    margin-bottom: 200px;
+}
+
+/*centro forms */
+main.container{
+    margin:0;
+    border: 0;
+    padding: 0;
+}
+.centro{ 
+    background-color: #20c997;
+    display: flex;
+    height: 500px;
+    width: 600px;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+}
+
+/*interna */
+
+
+
+/* Area Footer */
+
+footer{
+    background-color: black;
+    padding: 100px;
+    margin-top: 20px;
+}
