@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Candidato;
 
 class CandidatoController extends Controller
 {
@@ -11,9 +12,20 @@ class CandidatoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function __invoke()
+    {
+        
+    }
     public function index()
     {
         //
+        $candidatos = Candidato::all();
+        return view('candidato.index',['candidatos'=>$candidatos]);
+
     }
 
     /**
@@ -24,6 +36,7 @@ class CandidatoController extends Controller
     public function create()
     {
         //
+        return view('candidato.create');
     }
 
     /**
@@ -35,6 +48,20 @@ class CandidatoController extends Controller
     public function store(Request $request)
     {
         //
+        $candidato = new Candidato;
+        $candidato->name = $request->name;
+        $candidato->description = $request->description;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $candidato->image = $imageName;
+        } 
+        $user = auth()->user();
+        $eleicao->user_id = $user->id;
+        $candidato->save();
+        return redirect('/');
     }
 
     /**
@@ -46,6 +73,9 @@ class CandidatoController extends Controller
     public function show($id)
     {
         //
+        $canditato = Candidato::findOrFail($id);
+
+        return view('candidato.show',['candidato'=>$candidato]);
     }
 
     /**
@@ -57,6 +87,9 @@ class CandidatoController extends Controller
     public function edit($id)
     {
         //
+        $candidato = Candidato::findOrFail($id);
+
+        return view('candidato.edit',['candidato'=>$candidato]);
     }
 
     /**
@@ -69,6 +102,18 @@ class CandidatoController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $candidato = Candidato::findOrFail($id);
+        $candidato->name = $request->name;
+        $candidato->description = $request->description;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $candidato->image = $imageName;
+        } 
+        $candidato->update();
+        return redirect('/');
     }
 
     /**
@@ -80,5 +125,7 @@ class CandidatoController extends Controller
     public function destroy($id)
     {
         //
+        Candidato::findOrFail($id)->delete();
+        return redirect('/');
     }
 }

@@ -3,6 +3,6 @@
 @section('content')
 
 <main>
-<img src="{{URL::asset('/img/votoonline.png')}}" class="img-fluid" alt="figura 1" width="50%">
+<img src="{{URL::asset('../img/votoonline.png')}}" class="img-fluid" alt="figura 1" heigth="50%" width="50%" >
 </main>
 @endsection

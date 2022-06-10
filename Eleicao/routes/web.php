@@ -21,6 +21,16 @@ Route::get('/', function () {
 });
 
 
-Route::resource('eleicao', EleicaoController::class);
-Route::resource('candidato',CandidatoController::class);
-Route::resource('voto',VotosController::class);
+Route::resource('eleicao', EleicaoController::class)->middleware('auth');
+Route::resource('candidato',CandidatoController::class)->middleware('auth');
+Route::resource('voto',VotosController::class)->middleware('auth');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('welcome');
+    })->name('welcome');
+});

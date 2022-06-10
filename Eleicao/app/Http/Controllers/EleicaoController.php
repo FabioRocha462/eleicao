@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Eleicao;
+
 
 class EleicaoController extends Controller
 {
@@ -11,10 +13,21 @@ class EleicaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function __invoke()
+    {
+        
+    }
+
     public function index()
     {
         //
-        return view('eleicao.index');
+        $eleicao = Eleicao::all();
+
+        return view('eleicao.index', ['eleicao'=>$eleicao]);
     }
 
     /**
@@ -37,6 +50,23 @@ class EleicaoController extends Controller
     public function store(Request $request)
     {
         //
+        $eleicao = new Eleicao;
+        $eleicao->name = $request->name;
+        $eleicao->description = $request->description;
+        $eleicao->date_start = $request->date_start;
+        $eleicao->date_end = $request->date_end;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $eleicao->image = $imageName;
+        } 
+        $user = auth()->user();
+        $eleicao->user_id = $user->id;
+        $eleicao->save();
+        return redirect('/');
+
     }
 
     /**
@@ -48,6 +78,9 @@ class EleicaoController extends Controller
     public function show($id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+
+        return view('eleicao.show',['eleicao'=>$eleicao]);
     }
 
     /**
@@ -59,6 +92,9 @@ class EleicaoController extends Controller
     public function edit($id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+
+        return view('eleicao.edit',['eleicao'=>$eleicao]);
     }
 
     /**
@@ -71,6 +107,22 @@ class EleicaoController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+        $eleicao->name = $request->name;
+        $eleicao->description = $request->description;
+        $eleicao->date_start = $request->date_start;
+        $eleicao->date_end = $request->date_end;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $eleicao->image = $imageName;
+        } 
+        $eleicao->update();
+        return redirect('/');
+
+
     }
 
     /**
@@ -82,5 +134,8 @@ class EleicaoController extends Controller
     public function destroy($id)
     {
         //
+        Eleicao::findOrFail($id)->delete();
+        return redirect('/');
+
     }
 }
