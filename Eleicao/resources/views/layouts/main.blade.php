@@ -45,7 +45,7 @@
             <li><a class="dropdown-item" href="#">
             <form  action="/logout" method="POST">
                                       @csrf
-                                      <a href="logout" onclick="event.preventDefault();
+                                      <a id="link_sair" href="logout" onclick="event.preventDefault();
                                       this.closest('form').submit();" >
                                       Sair
                                     </a>

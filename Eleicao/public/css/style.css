@@ -33,7 +33,7 @@ nav{
 main{
     margin:0;
     border: 0;
-    padding: 0;
+    padding: 50px;
 }
 .centro{ 
     background-color: #20c997;
@@ -66,8 +66,30 @@ main{
     justify-content: center;
     padding: 120px;
 }
+.show_eleicao{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    margin-top: 20px; 
+}
+/* link_sair */
 
+#link_sair{
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    margin-left: 10%;
+}
 
+/* Area da class de pesquisar por candidato */
+
+.search_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
 /* Area Footer */
 
 footer{

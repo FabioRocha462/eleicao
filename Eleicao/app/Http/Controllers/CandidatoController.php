@@ -59,7 +59,7 @@ class CandidatoController extends Controller
             $candidato->image = $imageName;
         } 
         $user = auth()->user();
-        $eleicao->user_id = $user->id;
+        $candidato->user_id = $user->id;
         $candidato->save();
         return redirect('/');
     }
@@ -128,4 +128,5 @@ class CandidatoController extends Controller
         Candidato::findOrFail($id)->delete();
         return redirect('/');
     }
+
 }

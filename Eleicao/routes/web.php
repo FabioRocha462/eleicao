@@ -25,6 +25,8 @@ Route::resource('eleicao', EleicaoController::class)->middleware('auth');
 Route::resource('candidato',CandidatoController::class)->middleware('auth');
 Route::resource('voto',VotosController::class)->middleware('auth');
 
+Route::get('/{id}', [EleicaoController::class, 'searchcandidate'])->middleware('auth');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

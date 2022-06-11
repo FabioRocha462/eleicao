@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Eleicao;
+use App\Models\Candidato;
 
 
 class EleicaoController extends Controller
@@ -138,4 +139,18 @@ class EleicaoController extends Controller
         return redirect('/');
 
     }
+
+    public function searchcandidate($id)
+    {
+        $search = request('search');
+            $candidato = Candidato::where('name','like','%'.$search.'%')->get();
+            $eleicao = Eleicao::findOrFail($id);
+            if(empty($candidato)){
+                return redirect("eleicao.show",['eleicao'=>$eleicao]);
+            }else{
+                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao]);
+            }
+        
+    }
+
 }
