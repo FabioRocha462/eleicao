@@ -62,7 +62,9 @@ class User extends Authenticatable
     public function eleicaos(){
         return $this->hasMany('App\Models\Eleicao');
     }
-
+    public function eleicoesvotos(){
+        return $this->belongsToMany('App\Models\Eleicao');
+    }
     public function candidatos(){
         return $this->hasMany('App\Models\Candidato');
     }

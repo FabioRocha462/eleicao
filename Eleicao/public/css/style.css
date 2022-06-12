@@ -82,6 +82,17 @@ main{
     margin-left: 10%;
 }
 
+.eleicoes_welcome{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    margin-top: 20px;
+}
+
+.card{
+    background-color:#2dad67;
+}
+
 /* Area da class de pesquisar por candidato */
 
 .search_candidate{
@@ -89,6 +100,12 @@ main{
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+}
+
+/* area da card-img */
+
+.card-img-top{
+    height: 250px;
 }
 /* Area Footer */
 

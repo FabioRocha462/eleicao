@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use App\Models\Eleicao;
+use App\Providers\view;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -14,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
     }
 
     /**
@@ -24,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        $eleicoes = Eleicao::all();
+        view()->share('eleicoes', $eleicoes);
     }
 }

@@ -23,7 +23,8 @@ class CandidatoController extends Controller
     public function index()
     {
         //
-        $candidatos = Candidato::all();
+        $user = auth()->user();
+        $candidatos = $user->candidatos;
         return view('candidato.index',['candidatos'=>$candidatos]);
 
     }
@@ -73,7 +74,7 @@ class CandidatoController extends Controller
     public function show($id)
     {
         //
-        $canditato = Candidato::findOrFail($id);
+        $candidato = Candidato::findOrFail($id);
 
         return view('candidato.show',['candidato'=>$candidato]);
     }

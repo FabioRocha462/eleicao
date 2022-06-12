@@ -26,7 +26,9 @@ class EleicaoController extends Controller
     public function index()
     {
         //
-        $eleicao = Eleicao::all();
+        $user = auth()->user();
+
+        $eleicao = $user->eleicaos;
 
         return view('eleicao.index', ['eleicao'=>$eleicao]);
     }
@@ -81,7 +83,9 @@ class EleicaoController extends Controller
         //
         $eleicao = Eleicao::findOrFail($id);
 
-        return view('eleicao.show',['eleicao'=>$eleicao]);
+        $candidatosConcorrentes = $eleicao->candidatos;
+
+        return view('eleicao.show',['eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes]);
     }
 
     /**
@@ -145,12 +149,25 @@ class EleicaoController extends Controller
         $search = request('search');
             $candidato = Candidato::where('name','like','%'.$search.'%')->get();
             $eleicao = Eleicao::findOrFail($id);
+            $candidatosConcorrentes = $eleicao->candidatos;
             if(empty($candidato)){
                 return redirect("eleicao.show",['eleicao'=>$eleicao]);
             }else{
-                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao]);
+                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes]);
             }
-        
     }
+
+    public function vincularCandidato($id1,$id2){
+        $eleicao = Eleicao::findOrFail($id1);
+        $candidato = Candidato::findOrFail($id2);
+
+        $candidato->eleicaoCandidatos()->attach($id1);
+        return view('welcome');
+    }
+
+   /* public function eleicao_welcome(){
+        $eleicoes = Eleicao::all();
+        return view('welcome',['eleicoes'=>$eleicoes]);
+    } */
 
 }

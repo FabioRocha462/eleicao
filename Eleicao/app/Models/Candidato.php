@@ -17,4 +17,8 @@ class Candidato extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+
+    public function eleicaoCandidatos(){
+        return $this->belongsToMany('App\Models\Eleicao');
+    }
 }

@@ -9,7 +9,7 @@
                  @method('PUT')
                             <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label"></label>
-                                    <input type="text" class="form-control" value="{{$candidato->name}} name="name" id="exampleInputEmail1" placeholder="nome" aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" value="{{$candidato->name}}" name="name" id="exampleInputEmail1" placeholder="nome" aria-describedby="emailHelp">
                                     <div id="emailHelp" class="form-text"></div>
                             </div>
                             <div class="mb-3">
@@ -19,7 +19,7 @@
                             
                             <div class="mb-3">
                                 <label for="formFile" class="form-label"></label>
-                                <input class="form-control" value="{{$candidato->image}}"type="file" id="formFile">
+                                <input class="form-control" value="{{$candidato->image}}"type="file" name="image" id="formFile">
                                 <br>
                                 <div class="row">
                                         <div class="col">

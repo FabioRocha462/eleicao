@@ -25,14 +25,25 @@ Route::resource('eleicao', EleicaoController::class)->middleware('auth');
 Route::resource('candidato',CandidatoController::class)->middleware('auth');
 Route::resource('voto',VotosController::class)->middleware('auth');
 
+/* rota para pesquisar candidato */
 Route::get('/{id}', [EleicaoController::class, 'searchcandidate'])->middleware('auth');
+
+/* rota para vincular candidato a eleição */
+
+Route::post('/vincular/{id1}/{id2}', [EleicaoController::class,'vincularCandidato'])->middleware('auth');
+
+/* rota para mandar as eleições */
+
+// Route::resource('/', [EleicaoController::class,'eleicao_welcome'])->middleware('auth');
+
+
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
+    Route::get('/', function () {
         return view('welcome');
     })->name('welcome');
 });

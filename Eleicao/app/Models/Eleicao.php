@@ -18,4 +18,11 @@ class Eleicao extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+    public function users(){
+        return $this->belongsToMany('App\Models\User');
+    }
+    public function candidatos(){
+        return $this->belongsToMany('App\Models\Candidato');
+    }
+
 }
