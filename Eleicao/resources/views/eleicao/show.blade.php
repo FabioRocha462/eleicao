@@ -18,6 +18,9 @@
                 <div class="card-body">
                     <h5 class="card-title">{{$c->name}}</h5>
                     <p class="card-text">{{$c->description}}.</p>
+                    @if($c->eleicaoCandidatos()->where('eleicaos.id',$eleicao->id))
+                    <p><strong>este Candidato já participa desta eleiçaõ</strong></p>
+                    @else
                     <form action="/vincular/{{$eleicao->id}}/{{$c->id}}" method="POST">
                         @csrf
                         <a href="/vincular/{{$eleicao->id}}/{{$c->id}}"
@@ -27,6 +30,7 @@
                         Vincular
                        </a>
                     </form>
+                    @endif
                 </div>
             </div>
             @endforeach
@@ -67,9 +71,12 @@
                                     <p class="card-text"><small class="text-muted"><b>{{$eleicao->candidatosvotos()->where('candidatos.id',$concorrentes->id)->count()}} votos </br></small></p>
                                   <a class="btn btn-warning" href="{{route('candidato.show',$concorrentes->id)}}"><b>Saber mais</b></a>
                                   <hr>
+                              @if(  ($dateToday > $eleicao->date_start) && ($dateToday <= $eleicao->date_end ) )
+                              <p><b>Ainda não está na data</b></p>
+                              @else
                                   @if(auth()->user()->usereleicoes()->where('eleicaos.id',$eleicao->id)->count() > 0)
                                     <p><b>Você já votou nessa eleição</b></p>
-                                @else
+                                 @else
                                      <form action="/votando/{{$eleicao->id}}/{{$concorrentes->id}}" method="POST">
                                         @csrf
                                         <a href="/votando/{{$eleicao->id}}/{{$concorrentes->id}}"
@@ -80,6 +87,7 @@
                                       </a>
                                     </form>
                                 @endif
+                              @endif
                                   </div>
                                 </div>
                               </div>

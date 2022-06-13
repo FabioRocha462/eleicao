@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Eleicao;
 use App\Models\Candidato;
+use Illuminate\Support\Facades\Date;
 
-
+use DateTime;
 class EleicaoController extends Controller
 {
     /**
@@ -53,6 +54,13 @@ class EleicaoController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name'=>'required',
+            'description' => 'required',
+            'image'=>'required',
+            'date_start'=>'required',
+            'date_end'=>'required',
+        ]);
         $eleicao = new Eleicao;
         $eleicao->name = $request->name;
         $eleicao->description = $request->description;
@@ -84,8 +92,9 @@ class EleicaoController extends Controller
         $eleicao = Eleicao::findOrFail($id);
 
         $candidatosConcorrentes = $eleicao->candidatos;
+        $dateToday = new DateTime('now');
 
-        return view('eleicao.show',['eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes]);
+        return view('eleicao.show',['eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes,'dateToday'=>$dateToday]);
     }
 
     /**
@@ -152,10 +161,11 @@ class EleicaoController extends Controller
             $candidato = $user->candidatos()->where('name','like','%'.$search.'%')->get();;
             $eleicao = Eleicao::findOrFail($id);
             $candidatosConcorrentes = $eleicao->candidatos;
+            $dateToday = new DateTime('now');
             if(empty($candidato)){
                 return redirect("eleicao.show",['eleicao'=>$eleicao]);
             }else{
-                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes]);
+                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes,'dateToday'=>$dateToday]);
             }
     }
 

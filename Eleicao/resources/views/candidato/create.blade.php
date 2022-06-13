@@ -13,7 +13,7 @@
                             </div>
                             <div class="mb-3">
                                     <label for="exampleFormControlTextarea1" class="form-label"></label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="description" placeholder="Descreva sua Eleição?"></textarea>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="description" placeholder="Descreva seu Candidato"></textarea>
                             </div>
                             
                             <div class="mb-3">

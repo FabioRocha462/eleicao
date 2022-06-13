@@ -49,6 +49,11 @@ class CandidatoController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name'=>'required',
+            'description' => 'required',
+            'image'=>'required',
+        ]);
         $candidato = new Candidato;
         $candidato->name = $request->name;
         $candidato->description = $request->description;
