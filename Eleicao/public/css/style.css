@@ -30,30 +30,87 @@ nav{
 }
 
 /*centro forms */
-main.container{
+main{
     margin:0;
     border: 0;
-    padding: 0;
+    padding: 50px;
 }
 .centro{ 
     background-color: #20c997;
-    display: flex;
-    height: 500px;
+    display: block;
+    height: 650px;
     width: 600px;
     margin: auto;
     align-items: center;
     justify-content: center;
     border-radius: 5px;
+    padding: 20px;
 }
 
+#CreateEleicao{
+    color:white;
+    margin-left: 25%;
+}
+.centro,h5{
+    color:white;
+    margin-left: 25%;
+}
 /*interna */
 
+/* index */
 
+.index{
+    display: block;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    padding: 120px;
+}
+.show_eleicao{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    margin-top: 20px; 
+}
+/* link_sair */
 
+#link_sair{
+    text-decoration: none;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    margin-left: 10%;
+}
+
+.eleicoes_welcome{
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+    margin-top: 20px;
+}
+
+.card{
+    background-color:#2dad67;
+}
+
+/* Area da class de pesquisar por candidato */
+
+.search_candidate{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* area da card-img */
+
+.card-img-top{
+    height: 250px;
+}
 /* Area Footer */
 
 footer{
-    background-color: black;
-    padding: 100px;
+    background-color:black;
+    padding: 50px;
     margin-top: 20px;
 }

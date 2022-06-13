@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Eleicao;
+use App\Models\Candidato;
+use Illuminate\Support\Facades\Date;
 
+use DateTime;
 class EleicaoController extends Controller
 {
     /**
@@ -11,10 +15,23 @@ class EleicaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    public function __invoke()
+    {
+        
+    }
+
     public function index()
     {
         //
-        return view('eleicao.index');
+        $user = auth()->user();
+
+        $eleicao = $user->eleicaos;
+
+        return view('eleicao.index', ['eleicao'=>$eleicao]);
     }
 
     /**
@@ -37,6 +54,30 @@ class EleicaoController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name'=>'required',
+            'description' => 'required',
+            'image'=>'required',
+            'date_start'=>'required',
+            'date_end'=>'required',
+        ]);
+        $eleicao = new Eleicao;
+        $eleicao->name = $request->name;
+        $eleicao->description = $request->description;
+        $eleicao->date_start = $request->date_start;
+        $eleicao->date_end = $request->date_end;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $eleicao->image = $imageName;
+        } 
+        $user = auth()->user();
+        $eleicao->user_id = $user->id;
+        $eleicao->save();
+        return redirect('/');
+
     }
 
     /**
@@ -48,6 +89,12 @@ class EleicaoController extends Controller
     public function show($id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+
+        $candidatosConcorrentes = $eleicao->candidatos;
+        $dateToday = new DateTime('now');
+
+        return view('eleicao.show',['eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes,'dateToday'=>$dateToday]);
     }
 
     /**
@@ -59,6 +106,9 @@ class EleicaoController extends Controller
     public function edit($id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+
+        return view('eleicao.edit',['eleicao'=>$eleicao]);
     }
 
     /**
@@ -71,6 +121,22 @@ class EleicaoController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $eleicao = Eleicao::findOrFail($id);
+        $eleicao->name = $request->name;
+        $eleicao->description = $request->description;
+        $eleicao->date_start = $request->date_start;
+        $eleicao->date_end = $request->date_end;
+        if($request->hasFile('image') && $request->file('image')->isValid()){
+            $requestImage = $request->image;
+            $extension =$requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            $requestImage->move(public_path('img/imagens'), $imageName);
+            $eleicao->image = $imageName;
+        } 
+        $eleicao->update();
+        return redirect('/');
+
+
     }
 
     /**
@@ -82,5 +148,47 @@ class EleicaoController extends Controller
     public function destroy($id)
     {
         //
+        Eleicao::findOrFail($id)->delete();
+        return redirect('/');
+
     }
+
+    public function searchcandidate($id)
+    {
+        $search = request('search');
+            /*$candidato = Candidato::where('name','like','%'.$search.'%')->get();*/
+            $user = auth()->user();
+            $candidato = $user->candidatos()->where('name','like','%'.$search.'%')->get();;
+            $eleicao = Eleicao::findOrFail($id);
+            $candidatosConcorrentes = $eleicao->candidatos;
+            $dateToday = new DateTime('now');
+            if(empty($candidato)){
+                return redirect("eleicao.show",['eleicao'=>$eleicao]);
+            }else{
+                return view("eleicao.show",['candidato'=>$candidato,'search'=>$search,'eleicao'=>$eleicao,'candidatosConcorrentes'=>$candidatosConcorrentes,'dateToday'=>$dateToday]);
+            }
+    }
+
+    public function vincularCandidato($id1,$id2){
+        $eleicao = Eleicao::findOrFail($id1);
+        $candidato = Candidato::findOrFail($id2);
+
+        $candidato->eleicaoCandidatos()->attach($id1);
+        return redirect('/');
+    }
+
+   /* public function eleicao_welcome(){
+        $eleicoes = Eleicao::all();
+        return view('welcome',['eleicoes'=>$eleicoes]);
+    } */
+
+    public function votando($id1,$id2){
+        $user = auth()->user();
+        $user->usercandidatos()->attach($id2);
+        $user->usereleicoes()->attach($id1);
+        $eleicao = Eleicao::findOrFail($id1);
+        $eleicao->candidatosvotos()->attach($id2);
+        return redirect('/');
+    }
+
 }
