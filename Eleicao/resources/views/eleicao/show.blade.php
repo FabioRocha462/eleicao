@@ -34,24 +34,21 @@
         @endif   
         </div>
 <div class="show_eleicao">
-        <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-            <img src="../img/imagens/{{$eleicao->image}}" class="img-fluid rounded-start" alt="{{$eleicao->name}}">
-            </div>
-            <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{$eleicao->name}}</h5>
+<div class="card" style="width: 18rem;">
+  <img src="../img/imagens/{{$eleicao->image}}" class="card-img-top" alt="{{$eleicao->name}}">
+  <div class="card-body">
+  <h5 class="card-title">{{$eleicao->name}}</h5>
                 <p class="card-text">{{$eleicao->description}}.</p>
-                <p class="card-text"><small class="text-muted">Data início: {{$eleicao->date_start}}</small></p>
-                <p class="card-text"><small class="text-muted">Data fim: {{$eleicao->date_end}}</small></p>
-            </div>
-            </div>
-        </div>
-        </div>
-
-        
+                <p class="card-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-week" viewBox="0 0 16 16">
+                                    <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/>
+                                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                                  </svg> {{date('d/m/y', strtotime($eleicao->date_start))}}-{{date('d/m/y', strtotime($eleicao->date_end))}}</p>
+  </div>
 </div>
+</div>
+       
+        
+
 <div class="eleicoes_welcome">
             <div class="row">
               <div class="col-sm-12 text-dark text-center my-4" >
@@ -67,8 +64,22 @@
                                   <div class="card-body">
                                     <hr>
                                     <h5 class="card-title">{{$concorrentes->name}}</h5>
+                                    <p class="card-text"><small class="text-muted"><b>{{$eleicao->candidatosvotos()->where('candidatos.id',$concorrentes->id)->count()}} votos </br></small></p>
                                   <a class="btn btn-warning" href="{{route('candidato.show',$concorrentes->id)}}"><b>Saber mais</b></a>
-                                  <a class="btn btn-warning" href="#"><b>Votar</b></a>
+                                  <hr>
+                                  @if(auth()->user()->usereleicoes()->where('eleicaos.id',$eleicao->id)->count() > 0)
+                                    <p><b>Você já votou nessa eleição</b></p>
+                                @else
+                                     <form action="/votando/{{$eleicao->id}}/{{$concorrentes->id}}" method="POST">
+                                        @csrf
+                                        <a href="/votando/{{$eleicao->id}}/{{$concorrentes->id}}"
+                                        class="btn btn-warning"  id="event-submit"
+                                        onclick="event.preventDefault();
+                                        this.closest('form').submit()">
+                                        <b>Votar</b>
+                                      </a>
+                                    </form>
+                                @endif
                                   </div>
                                 </div>
                               </div>

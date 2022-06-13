@@ -32,6 +32,8 @@ Route::get('/{id}', [EleicaoController::class, 'searchcandidate'])->middleware('
 
 Route::post('/vincular/{id1}/{id2}', [EleicaoController::class,'vincularCandidato'])->middleware('auth');
 
+Route::post('/votando/{id1}/{id2}', [EleicaoController::class,'votando'])->middleware('auth');
+
 /* rota para mandar as eleições */
 
 // Route::resource('/', [EleicaoController::class,'eleicao_welcome'])->middleware('auth');

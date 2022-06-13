@@ -147,7 +147,9 @@ class EleicaoController extends Controller
     public function searchcandidate($id)
     {
         $search = request('search');
-            $candidato = Candidato::where('name','like','%'.$search.'%')->get();
+            /*$candidato = Candidato::where('name','like','%'.$search.'%')->get();*/
+            $user = auth()->user();
+            $candidato = $user->candidatos()->where('name','like','%'.$search.'%')->get();;
             $eleicao = Eleicao::findOrFail($id);
             $candidatosConcorrentes = $eleicao->candidatos;
             if(empty($candidato)){
@@ -162,12 +164,21 @@ class EleicaoController extends Controller
         $candidato = Candidato::findOrFail($id2);
 
         $candidato->eleicaoCandidatos()->attach($id1);
-        return view('welcome');
+        return redirect('/');
     }
 
    /* public function eleicao_welcome(){
         $eleicoes = Eleicao::all();
         return view('welcome',['eleicoes'=>$eleicoes]);
     } */
+
+    public function votando($id1,$id2){
+        $user = auth()->user();
+        $user->usercandidatos()->attach($id2);
+        $user->usereleicoes()->attach($id1);
+        $eleicao = Eleicao::findOrFail($id1);
+        $eleicao->candidatosvotos()->attach($id2);
+        return redirect('/');
+    }
 
 }

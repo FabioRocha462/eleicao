@@ -25,4 +25,12 @@ class Eleicao extends Model
         return $this->belongsToMany('App\Models\Candidato');
     }
 
+
+    
+    public function candidatosvotos(){
+        return $this->belongsToMany(Candidato::class,'candidato_eleicao_voto','eleicao_id','candidato_id');
+    }
+    
+
+
 }

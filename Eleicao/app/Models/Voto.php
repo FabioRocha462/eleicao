@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Voto extends Model
 {
     use HasFactory;
+    protected $casts = [
+        'items' => 'array'
+    ];
+
+    protected $date = ['date'];
+
 }
